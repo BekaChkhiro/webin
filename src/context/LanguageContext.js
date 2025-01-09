@@ -6,18 +6,21 @@ import { translations } from '../translations/translations';
 const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
-  const [selectedLanguage, setSelectedLanguage] = useState('ka');
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [showLanguagePopup, setShowLanguagePopup] = useState(true);
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language');
     if (savedLanguage) {
       setSelectedLanguage(savedLanguage);
+      setShowLanguagePopup(false);
     }
   }, []);
 
   const changeLanguage = (language) => {
     setSelectedLanguage(language);
     localStorage.setItem('language', language);
+    setShowLanguagePopup(false);
   };
 
   return (
@@ -25,7 +28,9 @@ export function LanguageProvider({ children }) {
       value={{ 
         selectedLanguage, 
         changeLanguage, 
-        content: translations[selectedLanguage] 
+        content: translations[selectedLanguage],
+        showLanguagePopup,
+        setShowLanguagePopup
       }}
     >
       {children}

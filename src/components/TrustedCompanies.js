@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from 'react';
 import useLanguageStore from '../store/languageStore';
 
@@ -52,20 +50,35 @@ const TrustedCompanies = () => {
     { name: 'Win Win', logo: WinWinLogo }
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerView = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(companies.length / itemsPerPage);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => 
-        prev === companies.length - itemsPerView ? 0 : prev + 1
-      );
-    }, 2000);
-
+    let timer;
+    if (isAutoPlaying) {
+      timer = setInterval(() => {
+        setCurrentPage((prev) => (prev + 1) % totalPages);
+      }, 3000);
+    }
     return () => clearInterval(timer);
-  }, [companies.length]);
+  }, [totalPages, isAutoPlaying]);
 
-  const visibleCompanies = [...companies, ...companies.slice(0, itemsPerView)];
+  const handlePrevPage = () => {
+    setIsAutoPlaying(false);
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const handleNextPage = () => {
+    setIsAutoPlaying(false);
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const handlePageClick = (pageIndex) => {
+    setIsAutoPlaying(false);
+    setCurrentPage(pageIndex);
+  };
 
   return (
     <div className="w-full max-w-[1200px] mt-16 p-4">
@@ -73,27 +86,74 @@ const TrustedCompanies = () => {
         <h2 className="text-white text-2xl md:text-3xl text-center font-bold mb-12">
           {content.partnersTitle}
         </h2>
-        <div className="relative overflow-hidden">
-          <div 
-            className="flex transition-transform duration-1000"
-            style={{ 
-              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
-              width: `${(companies.length + itemsPerView) * (100 / itemsPerView)}%`
-            }}
+        
+        <div className="relative">
+          {/* Navigation Buttons */}
+          <button
+            onClick={handlePrevPage}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-all z-10"
+            aria-label="Previous page"
           >
-            {visibleCompanies.map((company, index) => (
-              <div 
-                key={`${company.name}-${index}`}
-                className="flex-shrink-0 w-1/5 px-4"
-              >
-                <div className="bg-white rounded-lg p-4 h-24 flex items-center justify-center">
-                  <img
-                    src={company.logo}
-                    alt={company.name}
-                    className="max-h-full w-auto object-contain"
-                  />
+            ←
+          </button>
+          <button
+            onClick={handleNextPage}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-all z-10"
+            aria-label="Next page"
+          >
+            →
+          </button>
+
+          {/* Carousel Content */}
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{
+                transform: `translateX(-${currentPage * 100}%)`,
+              }}
+            >
+              {Array.from({ length: totalPages }).map((_, pageIndex) => (
+                <div
+                  key={pageIndex}
+                  className="w-full flex-shrink-0 flex gap-4"
+                >
+                  {companies
+                    .slice(
+                      pageIndex * itemsPerPage,
+                      (pageIndex + 1) * itemsPerPage
+                    )
+                    .map((company) => (
+                      <div
+                        key={company.name}
+                        className="flex-1 group"
+                      >
+                        <div className="rounded-xlh-32 flex items-center justify-center">
+                          <img
+                            src={company.logo}
+                            alt={company.name}
+                            className="max-h-full w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                          />
+                        </div>
+                      </div>
+                    ))}
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Page Indicators */}
+          <div className="flex justify-center gap-2 mt-8">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageClick(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  currentPage === index
+                    ? 'bg-white w-6'
+                    : 'bg-white/40 hover:bg-white/60'
+                }`}
+                aria-label={`Go to page ${index + 1}`}
+              />
             ))}
           </div>
         </div>

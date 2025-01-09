@@ -2,12 +2,12 @@ import { create } from 'zustand';
 import { translations } from '../translations/translations';
 
 const useLanguageStore = create((set) => ({
-  selectedLanguage: 'ka',
-  content: translations['ka'],
+  selectedLanguage: 'en',
+  content: translations['en'],
   initialized: false,
   initialize: () => {
     if (typeof window !== 'undefined') {
-      const savedLanguage = localStorage.getItem('language') || 'ka';
+      const savedLanguage = localStorage.getItem('language') || 'en';
       set({
         selectedLanguage: savedLanguage,
         content: translations[savedLanguage],

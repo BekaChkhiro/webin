@@ -1,4 +1,9 @@
 module.exports = {
-  content: ["./**/*.php", "./src/**/*.js"],
+  content: [
+    "./*.php",
+    "./templates/**/*.php",
+    "./src/**/*.{js,jsx}",
+    "./inc/**/*.php"
+  ],
   plugins: [require("@tailwindcss/typography")]
 }

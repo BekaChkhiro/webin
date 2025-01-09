@@ -12,6 +12,9 @@ export const translations = {
     downloadButton: "პრეზენტაციის გადმოწერა",
     presentationFile: "INFINITY SOLUTIONS.pdf",
     partnersTitle: "ჩვენი პარტნიორები",
+    chooseLanguage: "აირჩიეთ ენა",
+    georgian: "ქართული",
+    english: "English",
     contactForm: {
       title: 'დაგვიკავშირდით',
       packageTitle: '{package} პაკეტი',
@@ -85,6 +88,9 @@ export const translations = {
     downloadButton: "Download Presentation",
     presentationFile: "infinity-english.pdf",
     partnersTitle: "Our Partners",
+    chooseLanguage: "Choose Language",
+    georgian: "ქართული",
+    english: "English",
     contactForm: {
       title: 'Contact Us',
       packageTitle: '{package} Package',
