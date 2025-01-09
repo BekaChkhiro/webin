@@ -1,5 +1,7 @@
-import { LanguageProvider } from '../context/LanguageContext';
+import { useEffect } from 'react';
+import useLanguageStore from '../store/languageStore';
 import LanguagePopup from '../components/LanguagePopup';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import FloatingShapes from '../components/FloatingShapes';
 import PriceTable from '../components/PriceTable';
 import TrustedCompanies from '../components/TrustedCompanies';
@@ -7,9 +9,16 @@ import Hero from '../components/Hero';
 import Logo from '../assets/images/logo/infinitylogofinal1.webp';
 
 function HomePage() {
+  const { initialize } = useLanguageStore();
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
   return (
     <>
       <LanguagePopup />
+      <LanguageSwitcher />
       <FloatingShapes />
 
       {/* Main Content */}
@@ -25,8 +34,6 @@ function HomePage() {
 
 export default function Home() {
   return (
-    <LanguageProvider>
-      <HomePage />
-    </LanguageProvider>
+    <HomePage />
   );
 }

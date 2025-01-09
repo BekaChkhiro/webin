@@ -1,9 +1,16 @@
 import { create } from 'zustand';
 import { translations } from '../translations/translations';
 
+const getInitialLanguage = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('language') || 'en';
+  }
+  return 'en';
+};
+
 const useLanguageStore = create((set) => ({
-  selectedLanguage: 'en',
-  content: translations['en'],
+  selectedLanguage: getInitialLanguage(),
+  content: translations[getInitialLanguage()],
   initialized: false,
   initialize: () => {
     if (typeof window !== 'undefined') {
