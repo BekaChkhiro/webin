@@ -125,15 +125,19 @@ const TrustedCompanies = () => {
                     .map((company) => (
                       <div
                         key={company.name}
-                        className="flex-1 group"
+                        className="flex-1 group flex flex-col items-center gap-2"
                       >
-                        <div className="rounded-xlh-32 flex items-center justify-center">
+                        <div className="rounded-xl h-32 flex items-center justify-center">
                           <img
                             src={company.logo}
                             alt={company.name}
+                            title={company.name}
                             className="max-h-full w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
                           />
                         </div>
+                        <span className="text-white/80 group-hover:text-white text-sm text-center transition-colors">
+                          {company.name}
+                        </span>
                       </div>
                     ))}
                 </div>

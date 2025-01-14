@@ -11,6 +11,7 @@ const Hero = () => {
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/10 relative overflow-hidden">
         {/* Site Link */}
         <a href="https://infinity.ge/%e1%83%95%e1%83%94%e1%83%91-%e1%83%a1%e1%83%90%e1%83%98%e1%83%a2%e1%83%98%e1%83%a1-%e1%83%93%e1%83%90%e1%83%9b%e1%83%96%e1%83%90%e1%83%93%e1%83%94%e1%83%91%e1%83%90/" 
+           title={content.siteTitle}
            className="inline-block mb-4 group">
           <h1 className="text-[#61f5db] text-base">
             {content.siteTitle}
@@ -35,11 +36,13 @@ const Hero = () => {
 
         {/* Buttons Container */}
         <div className="flex flex-wrap gap-4 mt-8 items-center">
-          <a href="tel:+995568694879" 
+          <a href="tel:+995568694879"
+              title={content.ctaButton}
              className="md:hidden bg-gradient-to-r from-[#64ffda] to-[#48bfe3] text-gray-900 px-8 py-3 rounded-full font-bold">
             {content.ctaButton}
           </a>
           <a href={content.presentationFile} 
+              title={content.presentationFile}
              download 
              className="bg-gradient-to-r from-[#48bfe3] to-[#64ffda] text-gray-900 px-8 py-3 rounded-full font-bold">
             {content.downloadButton}

@@ -23,7 +23,7 @@ function HomePage() {
 
       {/* Main Content */}
       <div className="min-h-screen w-full flex flex-col justify-center items-center p-4 bg-gradient-to-br from-[#1a1c20] to-[#2a2d35]">
-        <img src={Logo} alt="Logo" className="w-1/5 max-w-[1200px] mb-8" />
+        <img src={Logo} alt="Logo" title="/" className="w-1/5 max-w-[1200px] mb-8" />
         <Hero />
         <PriceTable />
         <TrustedCompanies />
