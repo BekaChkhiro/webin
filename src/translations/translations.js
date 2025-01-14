@@ -31,7 +31,7 @@ export const translations = {
       }
     },
     pricing: {
-      title: 'ვებსაიტის დამზადება',
+      title: 'ვებსაიტის ფასები',
       subtitle: 'აირჩიეთ თქვენთვის სასურველი პაკეტი',
       popular: 'პოპულარული',
       perMonth: '/თვეში',
@@ -107,7 +107,7 @@ export const translations = {
       }
     },
     pricing: {
-      title: 'Website Development',
+      title: 'Website Prices',
       subtitle: 'Choose your preferred package',
       popular: 'Popular',
       perMonth: '/month',

@@ -82,10 +82,10 @@ const TrustedCompanies = () => {
 
   return (
     <div className="w-full max-w-[1200px] mt-16 p-4">
-      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/10">
-        <h2 className="text-white text-2xl md:text-3xl text-center font-bold mb-12">
+      <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/10 flex flex-col items-center">
+        <span className="w-full text-white text-2xl md:text-3xl text-center font-bold mb-12">
           {content.partnersTitle}
-        </h2>
+        </span>
         
         <div className="relative">
           {/* Navigation Buttons */}
