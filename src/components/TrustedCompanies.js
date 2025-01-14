@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
 import useLanguageStore from '../store/languageStore';
 
 // Import partner images
@@ -24,8 +24,13 @@ import SynevoLogo from '../assets/images/partners/synevo.webp';
 import TekaLogo from '../assets/images/partners/teka.webp';
 import WinWinLogo from '../assets/images/partners/win-win.png';
 
-const TrustedCompanies = () => {
+const TrustedCompanies = memo(() => {
   const { content } = useLanguageStore();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
   const companies = [
     { name: 'Armani', logo: ArmaniLogo },
     { name: 'Big Choice', logo: BigChoiceLogo },
@@ -50,10 +55,48 @@ const TrustedCompanies = () => {
     { name: 'Win Win', logo: WinWinLogo }
   ];
 
-  const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
   const totalPages = Math.ceil(companies.length / itemsPerPage);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const handlePrevPage = useCallback(() => {
+    setIsAutoPlaying(false);
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  }, [totalPages]);
+
+  const handleNextPage = useCallback(() => {
+    setIsAutoPlaying(false);
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  }, [totalPages]);
+
+  const handlePageClick = useCallback((pageIndex) => {
+    setIsAutoPlaying(false);
+    setCurrentPage(pageIndex);
+  }, []);
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      handleNextPage();
+    } else if (isRightSwipe) {
+      handlePrevPage();
+    }
+
+    setTouchStart(0);
+    setTouchEnd(0);
+  };
 
   useEffect(() => {
     let timer;
@@ -65,29 +108,14 @@ const TrustedCompanies = () => {
     return () => clearInterval(timer);
   }, [totalPages, isAutoPlaying]);
 
-  const handlePrevPage = () => {
-    setIsAutoPlaying(false);
-    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
-  };
-
-  const handleNextPage = () => {
-    setIsAutoPlaying(false);
-    setCurrentPage((prev) => (prev + 1) % totalPages);
-  };
-
-  const handlePageClick = (pageIndex) => {
-    setIsAutoPlaying(false);
-    setCurrentPage(pageIndex);
-  };
-
   return (
     <div className="w-full max-w-[1200px] mt-16 p-4">
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/10 flex flex-col items-center">
-        <span className="w-full text-white text-2xl md:text-3xl text-center font-bold mb-12">
-          {content.partnersTitle}
-        </span>
+        <h4 className="text-white text-2xl md:text-3xl font-bold mb-8 text-center">
+          {content.trustedTitle}
+        </h4>
         
-        <div className="relative">
+        <div className="relative w-full">
           {/* Navigation Buttons */}
           <button
             onClick={handlePrevPage}
@@ -105,9 +133,14 @@ const TrustedCompanies = () => {
           </button>
 
           {/* Carousel Content */}
-          <div className="overflow-hidden">
+          <div 
+            className="overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <div
-              className="flex transition-transform duration-500 ease-out"
+              className="flex transition-transform duration-500 ease-out will-change-transform"
               style={{
                 transform: `translateX(-${currentPage * 100}%)`,
               }}
@@ -122,7 +155,7 @@ const TrustedCompanies = () => {
                       pageIndex * itemsPerPage,
                       (pageIndex + 1) * itemsPerPage
                     )
-                    .map((company) => (
+                    .map((company, index) => (
                       <div
                         key={company.name}
                         className="flex-1 group flex flex-col items-center gap-2"
@@ -132,6 +165,9 @@ const TrustedCompanies = () => {
                             src={company.logo}
                             alt={company.name}
                             title={company.name}
+                            width="200"
+                            height="133"
+                            loading={index > 4 ? "lazy" : "eager"}
                             className="max-h-full w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
                           />
                         </div>
@@ -164,6 +200,8 @@ const TrustedCompanies = () => {
       </div>
     </div>
   );
-};
+});
+
+TrustedCompanies.displayName = 'TrustedCompanies';
 
 export default TrustedCompanies;

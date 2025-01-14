@@ -1,9 +1,10 @@
 "use client";
 
+import { memo } from 'react';
 import Feature from './Feature';
 import useLanguageStore from '../store/languageStore';
 
-const Hero = () => {
+const Hero = memo(() => {
   const { content } = useLanguageStore();
 
   return (
@@ -19,7 +20,13 @@ const Hero = () => {
         </a>
 
         {/* Main Title */}
-        <h3 className="text-white text-4xl md:text-5xl lg:text-6xl mb-6 font-bold leading-tight">
+        <h3 
+          className="text-white text-4xl md:text-5xl lg:text-6xl mb-6 font-bold leading-tight"
+          style={{
+            contentVisibility: 'auto',
+            containIntrinsicSize: '0 500px'
+          }}
+        >
           {content.mainTitle}
         </h3>
 
@@ -37,20 +44,26 @@ const Hero = () => {
         {/* Buttons Container */}
         <div className="flex flex-wrap gap-4 mt-8 items-center">
           <a href="tel:+995568694879"
-              title={content.ctaButton}
-             className="md:hidden bg-gradient-to-r from-[#64ffda] to-[#48bfe3] text-gray-900 px-8 py-3 rounded-full font-bold">
+             title={content.ctaButton}
+             className="md:hidden bg-gradient-to-r from-[#64ffda] to-[#48bfe3] text-gray-900 px-8 py-3 rounded-full font-bold"
+             rel="noopener"
+          >
             {content.ctaButton}
           </a>
           <a href={content.presentationFile} 
-              title={content.presentationFile}
+             title={content.presentationFile}
              download 
-             className="bg-gradient-to-r from-[#48bfe3] to-[#64ffda] text-gray-900 px-8 py-3 rounded-full font-bold">
+             className="bg-gradient-to-r from-[#48bfe3] to-[#64ffda] text-gray-900 px-8 py-3 rounded-full font-bold"
+             rel="noopener"
+          >
             {content.downloadButton}
           </a>
         </div>
       </div>
     </div>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;

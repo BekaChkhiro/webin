@@ -6,8 +6,9 @@
   "scripts": {
     "preview": "npm-run-all --parallel sync wpstart tailwindwatch",
     "sync": "browser-sync start -p 'boilerplate-2024.local' --files '**/*.php' 'build/*.js' 'build/*.css'",
+    "clean": "if exist build rd /s /q build",
     "buildwp": "wp-scripts build",
-    "build": "npm-run-all --sequential buildwp tailwindbuild",
+    "build": "npm-run-all --sequential clean buildwp tailwindbuild",
     "wpstart": "wp-scripts start",
     "start": "npm-run-all --parallel wpstart tailwindwatch",
     "tailwindbuild": "tailwindcss -i ./src/index.css -o ./build/index.css --minify",
@@ -21,8 +22,11 @@
     "@tailwindcss/typography": "^0.5.13",
     "@wordpress/scripts": "^27.9.0",
     "browser-sync": "^3.0.2",
+    "compression-webpack-plugin": "^11.1.0",
+    "css-minimizer-webpack-plugin": "^7.0.0",
     "npm-run-all": "^4.1.5",
-    "tailwindcss": "^3.4.3"
+    "tailwindcss": "^3.4.3",
+    "terser-webpack-plugin": "^5.3.11"
   },
   "dependencies": {
     "framer-motion": "^11.16.1",
